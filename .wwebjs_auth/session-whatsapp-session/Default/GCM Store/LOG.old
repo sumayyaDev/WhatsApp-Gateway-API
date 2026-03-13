@@ -1,2 +1,3 @@
-2026/03/13-17:15:49.935 1878 Creating DB C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\GCM Store since it was missing.
-2026/03/13-17:15:49.940 1878 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\GCM Store/MANIFEST-000001
+2026/03/13-17:19:39.659 3d8 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\GCM Store/MANIFEST-000001
+2026/03/13-17:19:39.660 3d8 Recovering log #3
+2026/03/13-17:19:39.661 3d8 Reusing old log C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\GCM Store/000003.log 

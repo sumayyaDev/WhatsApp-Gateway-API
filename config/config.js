@@ -13,10 +13,11 @@ dotenv.config();
 const config = {
   // Server setup
   server: {
-    nodeEnv: process.env.NODE_ENV || "development",
-    port: process.env.PORT || "3000",
-    host: process.env.HOST,
+    nodeEnv: process.env.NODE_ENV || 'development',
+    port: parseInt(process.env.PORT || '3000'),
+    host: process.env.HOST || 'localhost',
   },
+
 
   // WhatsAp setup
   whatsapp: {

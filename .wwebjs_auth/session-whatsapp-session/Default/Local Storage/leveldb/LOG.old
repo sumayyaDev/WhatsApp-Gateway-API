@@ -1,2 +1,3 @@
-2026/03/13-17:15:38.652 1460 Creating DB C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Local Storage\leveldb since it was missing.
-2026/03/13-17:15:38.855 1460 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/13-17:19:34.757 21cc Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/13-17:19:34.773 21cc Recovering log #3
+2026/03/13-17:19:34.776 21cc Reusing old log C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Local Storage\leveldb/000003.log 
