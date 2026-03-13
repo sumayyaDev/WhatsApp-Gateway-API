@@ -51,13 +51,12 @@ class WhatsAppService {
       
         puppeteer: {
         headless: config.whatsapp.headless,
-        executablePath: config.whatsapp.chromePath,
         args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage'
-        ]},
-        
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage"
+      ]},
+
         restartOnAuthFail: true,
         webVersionCache: {
           type: 'remote',
