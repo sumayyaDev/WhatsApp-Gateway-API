@@ -9,6 +9,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 const config = {
   // Server setup
@@ -16,6 +19,8 @@ const config = {
     nodeEnv: process.env.NODE_ENV || "development",
     port: parseInt(process.env.PORT || "3000"),
     host: process.env.HOST || "localhost",
+    isDevelopment: (process.env.NODE_ENV || "development") === "development",
+    isProduction: process.env.NODE_ENV === 'production',
   },
 
 
@@ -24,7 +29,7 @@ const config = {
     sessionName: process.env.WHATSAPP_SESSION_NAME || "whatsapp-session",
     headless: process.env.WHATSAPP_HEADLESS === "true",
     chromePath: process.env.WHATSAPP_CHROME_PATH || undefined,
-    sessionPath: path.join("../.wwebjs_auth"),
+    sessionPath: path.join(rootDir, ".wwebjs_auth"),
     qrCodeTimeout: 60000,  // 1 minute
     reconnectTimeout: 5000, // 5 seconds
     maxReconnectsAttempts: 5, 
@@ -52,8 +57,8 @@ const config = {
   // logging config
   logging: {
     level: process.env.LOG_LEVEL || "info",
-    logFile: path.join(process.env.LOG_FILE) || "../logs/app.log",
-    logsDir: path.join("../logs"),
+    logFile: path.join(rootDir, process.env.LOG_FILE || "logs/app.log"),
+    logsDir: path.join(rootDir, "logs"),
   },
 
   // CORS config
@@ -63,8 +68,9 @@ const config = {
   },
 
   paths: {
-    logs: path.join("../logs"),
-    session: path.join("../wwebjs_auth"),
+    root: rootDir,
+    logs: path.join(rootDir, "logs"),
+    sessions: path.join(rootDir, ".wwebjs_auth"),
   },
   
 };
