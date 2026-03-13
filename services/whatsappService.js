@@ -48,13 +48,16 @@ class WhatsAppService {
         authStrategy: new LocalAuth({
           clientId: config.whatsapp.sessionName,
         }),
+      
         puppeteer: {
-          headless: config.whatsapp.headless,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-          ...(config.whatsapp.chromePath && {
-            executablePath: config.whatsapp.chromePath,
-          }),
-        },
+        headless: config.whatsapp.headless,
+        executablePath: config.whatsapp.chromePath,
+        args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage'
+        ]},
+        
         restartOnAuthFail: true,
         webVersionCache: {
           type: 'remote',

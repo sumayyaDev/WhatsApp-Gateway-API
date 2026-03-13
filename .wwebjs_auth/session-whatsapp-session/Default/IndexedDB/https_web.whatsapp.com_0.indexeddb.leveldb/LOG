@@ -1,3 +1,12 @@
-2026/03/13-23:53:17.548 1bc8 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/13-23:53:17.549 1bc8 Recovering log #30
-2026/03/13-23:53:17.630 1bc8 Reusing old log C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000030.log 
+2026/03/14-00:54:18.504 32a4 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/14-00:54:18.505 32a4 Recovering log #30
+2026/03/14-00:54:18.786 32a4 Reusing old log C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000030.log 
+2026/03/14-00:54:22.709 32a4 Level-0 table #35: started
+2026/03/14-00:54:22.753 32a4 Level-0 table #35: 1131293 bytes OK
+2026/03/14-00:54:22.755 32a4 Delete type=0 #30
+2026/03/14-00:54:22.793 32a4 Compacting 1@1 + 1@2 files
+2026/03/14-00:54:22.864 32a4 Generated table #36@1: 29406 keys, 1458053 bytes
+2026/03/14-00:54:22.864 32a4 Compacted 1@1 + 1@2 files => 1458053 bytes
+2026/03/14-00:54:22.865 32a4 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/03/14-00:54:22.865 32a4 Delete type=2 #32
+2026/03/14-00:54:22.865 32a4 Delete type=2 #35
