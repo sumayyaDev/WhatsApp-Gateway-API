@@ -65,6 +65,11 @@ app.use(validationMiddleware);
 
 // Public routes
 app.get("/", (req, res) => {
+  // Render dashboard UI for browsers
+  if (req.accepts("html")) {
+    return res.render("dashboard");
+  }
+
   res.json({
     status: "success",
     message: "WhatsApp Backend API",
@@ -90,9 +95,10 @@ app.set("views", "./views");
 // Serve static files
 app.use(express.static("public"));
 
-// Dashboard route
+// Dashboard route (legacy)
 app.get("/dashboard", (req, res) => {
-  res.render("dashboard");
+  // Redirect to root so the dashboard renders at http://<host>:<port>
+  res.redirect("/");
 });
 
 // ===== ERROR HANDLING =====

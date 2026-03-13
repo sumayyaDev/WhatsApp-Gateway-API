@@ -25,7 +25,7 @@ A production-ready Node.js backend application, for WhatsApp Web integration wit
   ```terminal/bash```
  - **Step-1: npm install
  - **Step-2: npm run dev
- - **Step-3: visit: http://localhost:3000/dashboard
+ - **Step-3: visit: http://localhost:3000
 
 ## Using the Dashboard
 

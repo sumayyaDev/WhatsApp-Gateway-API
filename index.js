@@ -55,7 +55,7 @@ async function startServer() {
       console.log(`Port: ${config.server.port}`);
       console.log(`Environment: ${config.server.nodeEnv}`);
       console.log(`URL: http://${config.server.host}:${config.server.port}`);
-      console.log(`Dashboard: http://${config.server.host}:${config.server.port}/dashboard`);
+      console.log(`Dashboard: http://${config.server.host}:${config.server.port}`);
       console.log('═══════════════════════════════════════════════════════\n');
     });
   } catch (error) {

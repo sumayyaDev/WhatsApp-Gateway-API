@@ -1,3 +1,2 @@
-2026/03/13-21:53:11.493 1080 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Site Characteristics Database/MANIFEST-000001
-2026/03/13-21:53:11.494 1080 Recovering log #3
-2026/03/13-21:53:11.494 1080 Reusing old log C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Site Characteristics Database/000003.log 
+2026/03/13-22:42:06.739 2700 Creating DB C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Site Characteristics Database since it was missing.
+2026/03/13-22:42:06.946 2700 Reusing MANIFEST C:\Users\Asus\Desktop\Project_Assignment\whatsapp-backend-application\.wwebjs_auth\session-whatsapp-session\Default\Site Characteristics Database/MANIFEST-000001
