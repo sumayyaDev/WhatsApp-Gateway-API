@@ -13,15 +13,15 @@ dotenv.config();
 const config = {
   // Server setup
   server: {
-    nodeEnv: process.env.NODE_ENV || 'development',
-    port: parseInt(process.env.PORT || '3000'),
-    host: process.env.HOST || 'localhost',
+    nodeEnv: process.env.NODE_ENV || "development",
+    port: parseInt(process.env.PORT || "3000"),
+    host: process.env.HOST || "localhost",
   },
 
 
   // WhatsAp setup
   whatsapp: {
-    sessionName: process.env.WHATSAPP_SESSION_NAME,
+    sessionName: process.env.WHATSAPP_SESSION_NAME || "whatsapp-session",
     headless: process.env.WHATSAPP_HEADLESS === "true",
     chromePath: process.env.WHATSAPP_CHROME_PATH || undefined,
     sessionPath: path.join("../.wwebjs_auth"),
@@ -38,27 +38,27 @@ const config = {
 
   // Rate limiting
   rateLimit: {
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) ,
-    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS),
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000") ,
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "20"),
   },
 
   // Queue config
   queue: {
-    maxRetries: parseInt(process.env.QUEUE_MAX_RETRIES),
-    retryDelay: parseInt(process.env.QUEUE_RETRY_DELAY),
-    concurrentLimit: parseInt(process.env.QUEUE_CONCURRENT_LIMIT),
+    maxRetries: parseInt(process.env.QUEUE_MAX_RETRIES || "3"),
+    retryDelay: parseInt(process.env.QUEUE_RETRY_DELAY || "5000"),
+    concurrentLimit: parseInt(process.env.QUEUE_CONCURRENT_LIMIT || "5"),
   },
 
   // logging config
   logging: {
-    level: process.env.LOG_LEVEL,
-    logFile: path.join(process.env.LOG_FILE),
+    level: process.env.LOG_LEVEL || "info",
+    logFile: path.join(process.env.LOG_FILE) || "../logs/app.log",
     logsDir: path.join("../logs"),
   },
 
   // CORS config
   cors: {
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN || "*",
     credential: true,
   },
 
