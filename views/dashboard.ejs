@@ -1,0 +1,672 @@
+<!-- QR code display area
+* Connection status indicator
+* Message sending form
+* Queue statistics panel
+* Real-time activity log
+* Socket.IO integration
+* Responsive design (mobile-friendly)
+* Character counter
+* Success/error message display -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Backend Dashboard</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>  
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #212534;
+            /* display: flex;
+            align-items: center;
+            flex-direction: column; */
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            box-sizing: border-box;
+            }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-authenticating {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-error {
+            background: #f5c6cb;
+            color: #721c24;
+        }
+
+        #qrContainer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qrImage {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.secondary {
+            background: #6c757d;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .info-block {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-block strong {
+            color: #333;
+        }
+
+        .info-block p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .queue-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-box .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .message-log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-entry {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            color: #666;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-entry.success {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .log-entry.error {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .log-entry.info {
+            color: #17a2b8;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: loading 1.4s infinite;
+        }
+
+        @keyframes loading {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #f5c2c7;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📲 WhatsApp Gateway API</h1>
+            <p>Real-time WhatsApp Messaging Service</p>
+        </div>
+
+        <div class="grid">
+            <!-- QR Code & Authentication Section -->
+            <div class="card">
+                <h2>🔐 Authentication</h2>
+
+                <div class="status-badge" id="statusBadge">
+                    Initializing...
+                </div>
+
+                <div id="qrContainer">
+                    <p>Initializing connection...</p>
+                </div>
+
+                <div class="info-block">
+                    <strong>Status:</strong>
+                    <p id="statusText">Connecting to WhatsApp service...</p>
+                </div>
+
+                <button class="secondary" onclick="authenticateWhatsApp()">
+                    Authenticate WhatsApp
+                </button>
+
+                <div id="successMessage" class="success-message"></div>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+
+            <!-- Message Sending Section -->
+            <div class="card">
+                <h2>💬 Send Message</h2>
+
+                <div class="form-group">
+                    <label for="phoneInput">Phone Number</label>
+                    <input
+                        type="text"
+                        id="phoneInput"
+                        placeholder="Enter phone number (e.g., +88017******** or 017********)"
+                        />
+                </div>
+
+                <div class="form-group">
+                    <label for="messageInput">Message</label>
+                    <textarea
+                        id="messageInput"
+                        placeholder="Enter your message here..."></textarea>
+                </div>
+
+                <button onclick="sendMessage()" style="width: 100%;">
+                    Send Message
+                </button>
+
+                <div id="messageError" class="error-message"></div>
+
+                <div class="info-block" style="margin-top: 20px;">
+                    <strong>Character Count:</strong>
+                    <p id="charCount">0 / 4096</p>
+                </div>
+            </div>
+
+            <!-- System Info & Logs Section -->
+            <div class="card full-width">
+                <h2>Activity Log</h2>
+
+                <div class="message-log" id="activityLog">
+                    <div class="log-entry info">Initializing dashboard...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+
+        // DOM Elements
+        const statusBadge = document.getElementById('statusBadge');
+        const qrContainer = document.getElementById('qrContainer');
+        const statusText = document.getElementById('statusText');
+        const phoneInput = document.getElementById('phoneInput');
+        const messageInput = document.getElementById('messageInput');
+        const charCountDisplay = document.getElementById('charCount');
+        const activityLog = document.getElementById('activityLog');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const messageError = document.getElementById('messageError');
+
+        // State variables
+        let whatsappState = 'disconnected';
+        let isConnected = false;
+
+        // ===== LOGGING FUNCTIONS =====
+
+        function addLog(message, type = 'info', data = '') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}${
+                data ? ' - ' + JSON.stringify(data) : ''
+            }`;
+            activityLog.insertBefore(entry, activityLog.firstChild);
+
+            // Keep only last 50 entries
+            while (activityLog.children.length > 50) {
+                activityLog.removeChild(activityLog.lastChild);
+            }
+        }
+
+        function showMessage(message, type = 'success') {
+            const messageEl =
+                type === 'success' ? successMessage : errorMessage;
+            const otherEl = type === 'success' ? errorMessage : successMessage;
+
+            messageEl.textContent = message;
+            messageEl.style.display = 'block';
+            otherEl.style.display = 'none';
+
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 5000);
+        }
+
+        // ===== STATUS HANDLING =====
+
+        function updateStatus(status, state = null) {
+            if (state) whatsappState = state;
+
+            const stateColors = {
+                connected: 'status-connected',
+                disconnected: 'status-disconnected',
+                authenticating: 'status-authenticating',
+                waiting_for_qr: 'status-authenticating',
+                error: 'status-error',
+                reconnecting: 'status-authenticating',
+            };
+
+            const stateLabels = {
+                connected: '✅ Connected',
+                disconnected: '❌ Disconnected',
+                authenticating: '🔒🔑⌨️ Authenticating',
+                waiting_for_qr: '🔎 Scanning QR...',
+                error: '⚠️ Error',
+                reconnecting: '🔄 Reconnecting',
+            };
+
+            const colorClass = stateColors[whatsappState] || 'status-disconnected';
+            const label = stateLabels[whatsappState] || 'Unknown';
+
+            statusBadge.className = `status-badge ${colorClass}`;
+            statusBadge.textContent = label;
+            statusText.textContent = status;
+
+            isConnected = whatsappState === 'connected';
+            document.getElementById('phoneInput').disabled = !isConnected;
+            document.getElementById('messageInput').disabled = !isConnected;
+        }
+
+        // ===== SOCKET.IO EVENT HANDLERS =====
+
+        socket.on('connect', () => {
+            addLog('Connected to server', 'success');
+            requestStatus();
+            requestQueueStatus();
+        });
+
+        socket.on('disconnect', () => {
+            addLog('Disconnected from server', 'error');
+            updateStatus('Waiting for connection...', 'disconnected');
+        });
+
+        socket.on('qr', (data) => {
+            if (data.qr) {
+                const qrImage = document.createElement('img');
+                qrImage.id = 'qrImage';
+                qrImage.src = data.qr;
+                qrImage.alt = 'QR Code';
+                qrContainer.innerHTML = '';
+                qrContainer.appendChild(qrImage);
+                updateStatus(data.message || 'Scan QR code', 'waiting_for_qr');
+                addLog('QR Code generated', 'info');
+            }
+        });
+
+        socket.on('ready', (data) => {
+            qrContainer.innerHTML = '<p>✅ WhatsApp Connected!</p>';
+            updateStatus(data.message || 'Connected', 'connected');
+            addLog('WhatsApp connected', 'success');
+            showMessage('WhatsApp successfully connected!', 'success');
+        });
+
+        socket.on('authenticated', (data) => {
+            addLog('Authentication successful', 'success');
+            updateStatus('Connected', 'connected');
+        });
+
+        socket.on('disconnected', (data) => {
+            qrContainer.innerHTML = '<p>Disconnected from WhatsApp</p>';
+            updateStatus(data.message || 'Disconnected', 'disconnected');
+            addLog('WhatsApp disconnected', 'error');
+        });
+
+        socket.on('auth_failure', (data) => {
+            updateStatus(data.message || 'Authentication failed', 'error');
+            addLog('Authentication failed', 'error', data.message);
+        });
+
+        socket.on('error', (data) => {
+            addLog('Socket error', 'error', data.message);
+        });
+
+        //// API FUNCTIONS ////
+
+        function requestStatus() {
+            socket.emit('get_status', {});
+        }
+
+        function requestQueueStatus() {
+            socket.emit('get_queue_status', {});
+        }
+
+        async function authenticateWhatsApp() {
+            try {
+                addLog('Starting WhatsApp authentication...', 'info');
+                updateStatus('Initializing authentication...', 'authenticating');
+
+                socket.emit('authenticate', {});
+            } catch (error) {
+                addLog('Authentication error', 'error', error.message);
+                updateStatus('Authentication error', 'error');
+            }
+        }
+
+        async function sendMessage() {
+            const phone = phoneInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!phone) {
+                showMessage('Please enter a phone number', 'error');
+                return;
+            }
+
+            if (!message) {
+                showMessage('Please enter a message', 'error');
+                return;
+            }
+
+            if (!isConnected) {
+                showMessage('WhatsApp is not connected', 'error');
+                return;
+            }
+
+            try {
+                addLog('Sending message...', 'info', `to ${phone}`);
+
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phone, message }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    addLog('Message queued successfully', 'success', {
+                        queueId: data.queueId,
+                        phone,
+                    });
+                    showMessage('Message queued for sending!', 'success');
+                    phoneInput.value = '';
+                    messageInput.value = '';
+                    charCountDisplay.textContent = '0 / 4096';
+                    refreshQueueStatus();
+                } else {
+                    addLog('Message send failed', 'error', data.message);
+                    showMessage(data.message || 'Failed to send message', 'error');
+                }
+            } catch (error) {
+                addLog('Error sending message', 'error', error.message);
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function refreshQueueStatus() {
+            try {
+                const response = await fetch('/api/queue/status');
+                const data = await response.json();
+
+                if (data.data) {
+                    const queue = data.data.queue;
+                    const stats = data.data.stats;
+                    const capacity = data.data.capacity;
+
+                    document.getElementById('pendingCount').textContent =
+                        queue.pending;
+                    document.getElementById('processingCount').textContent =
+                        queue.processing;
+                    document.getElementById('sentCount').textContent = stats.totalSent;
+                    document.getElementById('failedCount').textContent =
+                        stats.totalFailed;
+
+                    document.getElementById('capacityInfo').innerHTML = `
+                        <strong>Current:</strong> ${capacity.current} / ${capacity.max}<br>
+                        <strong>Max Concurrent:</strong> ${capacity.maxConcurrent}
+                    `;
+
+                    addLog('Queue status updated', 'info', stats);
+                }
+            } catch (error) {
+                addLog('Error refreshing queue status', 'error', error.message);
+            }
+        }
+
+        messageInput.addEventListener('input', () => {
+            const length = messageInput.value.length;
+            charCountDisplay.textContent = `${length} / 4096`;
+
+            if (length > 4096) {
+                messageInput.value = messageInput.value.substring(0, 4096);
+                charCountDisplay.textContent = '4096 / 4096';
+            }
+        });
+
+        window.addEventListener('load', () => {
+            addLog('Dashboard loaded', 'success');
+            updateStatus('Connecting...', 'disconnected');
+
+            // Request initial status
+            setTimeout(() => {
+                requestStatus();
+                requestQueueStatus();
+            }, 1000);
+
+            // Refresh queue status every 5 seconds
+            setInterval(requestQueueStatus, 5000);
+        });
+
+        // Keep socket connection alive
+        setInterval(() => {
+            socket.emit('ping', {});
+        }, 30000);
+    </script>
+</body>
+</html>
