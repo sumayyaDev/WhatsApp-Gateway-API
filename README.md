@@ -168,11 +168,19 @@ The server handles graceful shutdown:
 
 ## 📚 Resources and Documentation
 
-- [WhatsApp Web.js Documentation](https://weba-um.github.io/whatsapp-web.js/)
-- [Express.js Guide](https://expressjs.com/)
-- [Socket.IO Documentation](https://socket.io/docs/)
-- [Winston Logger Guide](https://github.com/winstonjs/winston)
-
+- **[WhatsApp Web.js Documentation]** : 
+-( https://github.com/wwebjs )
+-( https://docs.wwebjs.dev/ )
+-( https://www.npmjs.com/package/whatsapp-web.js )
+- **[Socket.IO Documentation]** : 
+- (https://socket.io/docs/v4/)
+- (https://socket.io/get-started/chat)
+- (https://github.com/alex0rpi/Gat-Chat)
+- **[Winston Logger Guide]** : 
+- (https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-winston-and-morgan-to-log-node-js-applications/)
+- (https://github.com/winstonjs/winston)
+- **[qrcode Documentation]** :
+- (https://www.npmjs.com/package/qrcode)
 ---
 
 ## ✨ Future Enhancements
